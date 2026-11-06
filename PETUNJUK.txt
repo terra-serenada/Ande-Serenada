@@ -1,0 +1,19 @@
+PEMBARUAN LOGO ANDE SERENADA
+
+Paket ini menggunakan logo asli Ande Serenada (lambang mangkuk dan wordmark).
+
+A. IKON SHORTCUT BROWSER / GITHUB PAGES
+1. Salin favicon.ico, favicon-16.png, favicon-32.png, favicon-48.png, icon-192.png, icon-512.png, apple-touch-icon.png, dan site.webmanifest ke folder root repository (sejajar dengan index.html).
+2. Buka index.html yang sekarang dipakai; JANGAN menggantinya dengan file lain.
+3. Buka tambahkan-ke-head-index.html.txt, salin seluruh isinya, lalu tempelkan di dalam elemen <head> ... </head> pada index.html.
+4. Commit dan tunggu GitHub Pages selesai deploy.
+5. Di HP, hapus shortcut Ande Serenada yang lama dari layar utama, buka ulang situs, lalu tambahkan ke layar utama lagi. Browser bisa menyimpan ikon lama dalam cache.
+
+B. IKON APK ANDROID
+Salin seluruh folder android/app/src/main/res dari paket ini ke lokasi yang sama pada repository, gabungkan dengan struktur yang sudah ada dan izinkan file ikon lama ditimpa. Ini mengganti ikon launcher APK. Kemudian jalankan build APK lagi.
+
+CATATAN
+- Paket ini TIDAK berisi index.html dan tidak mengubah data aplikasi.
+- Jangan menghapus atau mengganti index.html yang berisi aplikasi/pembukuan abang.
+- Ikon web shortcut (favicon/manifest) dan ikon APK (mipmap Android) adalah dua jalur berbeda; keduanya disiapkan di paket ini.
+- GitHub belum diubah oleh pembuat paket ini.
