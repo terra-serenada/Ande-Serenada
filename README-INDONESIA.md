@@ -1,40 +1,56 @@
-# Ande Serenada
+# Ande Serenada — Paket GitHub Pages + Android APK
 
-Aplikasi pembukuan penjualan makanan — versi web dan Android.
+Paket ini berisi aplikasi web Ande Serenada dan proyek Android WebView. File `index.html` adalah sumber aplikasi utama. Workflow GitHub Actions membangun APK Android secara otomatis.
 
-## Isi repositori
+## Isi paket
 
-- `index.html` — halaman utama yang langsung kompatibel dengan GitHub Pages.
-- `android/` — proyek Android berbasis WebView.
-- `.github/workflows/build-apk.yml` — otomatis membangun APK melalui GitHub Actions.
+- `index.html` — aplikasi Ande Serenada versi terbaru (tema gelap, Daftar Menu, panel struk, penyelamatan data).
+- `.nojekyll` — menonaktifkan pemrosesan Jekyll pada GitHub Pages.
+- `android/` — proyek Android WebView lengkap.
+- `.github/workflows/build-apk.yml` — workflow untuk membangun APK.
 
-## Menayangkan aplikasi web dengan GitHub Pages
+## Cara reset repository GitHub
 
-1. Buka **Settings → Pages** pada repositori GitHub.
-2. Pada **Build and deployment**, pilih **Deploy from a branch**.
-3. Pilih branch `main` dan folder `/(root)`, lalu tekan **Save**.
-4. Tunggu proses deployment selesai. GitHub akan menyediakan alamat Pages untuk repositori ini.
+1. Pastikan cadangan data aplikasi dari setiap HP sudah disimpan. Mengganti file repository tidak otomatis mencadangkan data lokal pada HP.
+2. Unduh dan ekstrak ZIP paket ini di komputer.
+3. Buka repository `terra-serenada/Ande-Serenada` di GitHub.
+4. Unggah **isi folder hasil ekstrak** ke root repository, bukan folder pembungkus `Ande-Serenada-Reset-GitHub`.
+5. Jika ingin benar-benar mengosongkan repository terlebih dahulu, lakukan itu hanya setelah memastikan salinan ZIP ini tersimpan. Cara yang lebih aman adalah mengganti/menimpa file repository dengan seluruh isi paket ini.
+6. Pastikan branch tujuan adalah `main` dan commit perubahan.
 
-File `index.html` sudah berada di akar repositori sehingga menjadi halaman awal GitHub Pages. Aplikasi tidak memakai pustaka eksternal; logo sudah tertanam di dalam HTML.
+## Mengaktifkan GitHub Pages
 
-## Membuat APK Android
+Di Settings → Pages:
 
-Setiap kali `index.html` atau folder `android/` berubah dan di-push ke branch `main`, GitHub Actions akan menjalankan build APK.
+- Source: `Deploy from a branch`
+- Branch: `main`
+- Folder: `/(root)`
+- Save
 
-1. Buka tab **Actions**.
+Alamat halaman proyek: `https://terra-serenada.github.io/Ande-Serenada/`
+
+## Membangun APK
+
+1. Setelah paket masuk ke branch `main`, buka tab **Actions**.
 2. Pilih workflow **Build Ande Serenada APK**.
-3. Tunggu hingga status **Success**.
-4. Buka hasil workflow dan unduh artifact **Ande-Serenada-APK**.
-5. Ekstrak artifact, lalu pasang `app-debug.apk` pada HP Android.
+3. Jalankan **Run workflow** jika workflow belum berjalan otomatis.
+4. Tunggu sampai semua langkah berstatus hijau.
+5. Buka hasil run dan unduh artifact **Ande-Serenada-Android-APK**.
+6. Ekstrak artifact ZIP untuk mendapatkan `app-debug.apk`, lalu kirim APK ke HP Android lain dan instal.
 
-Workflow menyalin `index.html` terbaru ke aset Android sebelum proses kompilasi, sehingga versi web dan APK menggunakan sumber HTML yang sama.
+APK debug dapat dipasang untuk pengujian dan distribusi internal. Android mungkin meminta izin **Install unknown apps** untuk aplikasi yang digunakan membuka APK.
 
-## Data dan privasi
+## Catatan data
 
-Data pembukuan disimpan secara lokal di browser/perangkat melalui `localStorage`. Data tidak otomatis tersinkron antar-HP dan tidak disimpan di GitHub. Gunakan fitur cadangan JSON untuk memindahkan data antarperangkat.
+Aplikasi web menyimpan data secara lokal pada perangkat/browser. Data di HP lama tidak otomatis ikut ke APK atau HP baru. Ekspor JSON dari perangkat lama dan pulihkan melalui menu **Data & Cadangan** pada perangkat tujuan. Buat cadangan sebelum pemulihan karena proses pulihkan mengganti data yang sedang aktif.
 
-## Catatan
+Pada APK Android, ekspor file menggunakan pemilih dokumen Android (Save As), sedangkan pemulihan JSON menggunakan pemilih dokumen (Open). Ini menghindari ketergantungan unduhan `blob:` pada browser.
 
-- APK debug ditujukan untuk pemasangan langsung dan pengujian.
-- Untuk menerbitkan aplikasi di Play Store, siapkan konfigurasi signing rilis dan keystore milik pemilik aplikasi.
-- Mengaktifkan GitHub Pages tidak membuat data pembukuan pengguna menjadi publik; yang dipublikasikan hanya file aplikasi, bukan isi `localStorage` pada perangkat.
+## Identitas aplikasi Android
+
+- Application ID: `id.terraserenada.andeserenada`
+- Minimum Android: Android 6.0 (API 23)
+- Target SDK: Android 15 (API 35)
+- Versi awal: `1.0.0` (debug APK)
+
+Jangan mengubah Application ID jika ingin mempertahankan identitas paket aplikasi pada pembaruan berikutnya.
