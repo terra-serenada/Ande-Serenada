@@ -1,19 +1,36 @@
-PEMBARUAN LOGO ANDE SERENADA
+PEMBARUAN IKON ANDE SERENADA — VERSI TERHUBUNG
 
-Paket ini menggunakan logo asli Ande Serenada (lambang mangkuk dan wordmark).
+PAKET INI MEMAKAI LOGO ASLI ANDE SERENADA.
 
-A. IKON SHORTCUT BROWSER / GITHUB PAGES
-1. Salin favicon.ico, favicon-16.png, favicon-32.png, favicon-48.png, icon-192.png, icon-512.png, apple-touch-icon.png, dan site.webmanifest ke folder root repository (sejajar dengan index.html).
-2. Buka index.html yang sekarang dipakai; JANGAN menggantinya dengan file lain.
-3. Buka tambahkan-ke-head-index.html.txt, salin seluruh isinya, lalu tempelkan di dalam elemen <head> ... </head> pada index.html.
-4. Commit dan tunggu GitHub Pages selesai deploy.
-5. Di HP, hapus shortcut Ande Serenada yang lama dari layar utama, buka ulang situs, lalu tambahkan ke layar utama lagi. Browser bisa menyimpan ikon lama dalam cache.
+Yang dibetulkan:
+- index.html sudah berisi tag favicon dan manifest (bukan lagi hanya potongan yang harus ditempel manual).
+- Favicon fallback 96px di-embed ke dalam HTML, agar file tunggal yang dibuka lokal dari WhatsApp tetap memiliki referensi ikon tanpa mengandalkan file pendamping.
+- Aset favicon, apple-touch-icon, ikon PWA 192/512, maskable icon, dan site.webmanifest tersedia di folder root.
+- Overlay ikon Android APK tersedia pada android/app/src/main/res.
 
-B. IKON APK ANDROID
-Salin seluruh folder android/app/src/main/res dari paket ini ke lokasi yang sama pada repository, gabungkan dengan struktur yang sudah ada dan izinkan file ikon lama ditimpa. Ini mengganti ikon launcher APK. Kemudian jalankan build APK lagi.
+UNTUK GITHUB PAGES:
+1. Cadangkan index.html yang sedang ada.
+2. Unggah index.html dari paket ini ke root repository, sejajar dengan .nojekyll.
+3. Unggah SEMUA file PNG/ICO dan site.webmanifest dari root paket ke root repository juga.
+4. Jangan meletakkan file ikon di subfolder; file manifest mengacu ke jalur ./
+5. Setelah Actions Pages selesai, buka https://terra-serenada.github.io/Ande-Serenada/ di Samsung Internet.
+6. Hapus shortcut lama dari layar utama saja (jangan hapus data browser atau data situs), lalu tambahkan shortcut baru dari situs HTTPS.
 
-CATATAN
-- Paket ini TIDAK berisi index.html dan tidak mengubah data aplikasi.
-- Jangan menghapus atau mengganti index.html yang berisi aplikasi/pembukuan abang.
-- Ikon web shortcut (favicon/manifest) dan ikon APK (mipmap Android) adalah dua jalur berbeda; keduanya disiapkan di paket ini.
-- GitHub belum diubah oleh pembuat paket ini.
+UNTUK FILE HTML LOKAL:
+- Favicon 96px sudah tertanam di index.html sebagai fallback.
+- Ikon pada shortcut file lokal masih dapat dibatasi oleh browser. Cara paling andal untuk ikon aplikasi yang tajam adalah shortcut dari halaman HTTPS dengan manifest aktif.
+
+UNTUK APK:
+- Gabungkan folder android/app/src/main/res dari paket ini ke folder yang sama dalam proyek Android, izinkan ikon lama ditimpa, lalu build APK baru.
+- Perubahan aset ikon saja tidak mengubah kode dan data pembukuan.
+
+KEAMANAN DATA:
+- Jangan hapus data/cache/storage browser. Menghapus data browser dapat menghilangkan localStorage pembukuan.
+- Paket ini tidak mengubah database atau JSON cadangan.
+- GitHub tidak diubah oleh pembuatan paket ini.
+
+
+CARA AMAN TANPA MENGGANTI SELURUH INDEX.HTML REPOSITORY:
+- Jika index.html di GitHub sudah lebih baru daripada file contoh dalam paket, jangan menimpa seluruh file.
+- Unggah semua aset ikon di root repository, lalu tempelkan isi index-head-snippet-GitHub-Pages.html.txt ke dalam <head> pada index.html yang sedang aktif.
+- File Ande-Serenada-Logo-Fixed-v2.html (di luar ZIP) adalah salinan mandiri dari HTML Penyelamatan Data terakhir yang tersedia di sesi ini, dengan apple-touch-icon dan favicon tertanam untuk pemakaian lokal.
