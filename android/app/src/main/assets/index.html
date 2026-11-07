@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#100d0b">
+<!-- Ikon Ande Serenada: fallback tertanam untuk file HTML lokal dan aset eksternal untuk GitHub Pages -->
 <title>Ande Serenada — Pembukuan Makanan</title>
 <style>
 :root{--ink:#4a210f;--muted:#718078;--green:#d94b0a;--green2:#b8440a;--cream:#fff8eb;--paper:#fffdf7;--line:#ead9c1;--gold:#ffbf22;--red:#b94c45;--shadow:0 12px 36px rgba(30,54,43,.08);--radius:18px}
@@ -165,6 +165,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .receipt-export-actions{flex-wrap:wrap}
 @media(max-width:760px){.receipt-line-item{grid-template-columns:minmax(0,1fr) 54px 92px 30px}.receipt-paper{padding:22px 18px}.receipt-preview-modal{padding:15px}#receipt-preview{padding:5px}}
 </style>
+
+<!-- Ande Serenada: ikon web dan layar utama. Ikon utama berpadding untuk menghindari pemotongan/masking Android. -->
+<link rel="icon" href="./ande-serenada-favicon-v3.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="./ande-serenada-favicon-16-v3.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./ande-serenada-favicon-32-v3.png">
+<link rel="icon" type="image/png" sizes="48x48" href="./ande-serenada-favicon-48-v3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./ande-serenada-apple-touch-180-v3.png">
+<link rel="manifest" href="./site.webmanifest">
+<meta name="application-name" content="Ande Serenada">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ande Serenada">
+<meta name="theme-color" content="#100D0B">
 </head>
 <body>
 <div class="app">
@@ -339,7 +352,7 @@ $('expense-form').addEventListener('submit',e=>{e.preventDefault();const amount=
 function showExpenseForm(){$('expense-form').reset();$('expense-date').value=todayISO();openModal('expense-modal')}
 function deleteExpense(id){if(!confirm('Hapus catatan pengeluaran ini?'))return;state.expenses=state.expenses.filter(e=>e.id!==id);save();renderExpenses();renderDashboard();renderReports();toast('Pengeluaran dihapus.')}
 function csvEscape(v){return `"${String(v??'').replaceAll('"','""')}"`}
-function download(name,content,type='text/plain;charset=utf-8'){if(window.AndroidBridge&&typeof window.AndroidBridge.saveTextFile==='function'){window.AndroidBridge.saveTextFile(name,String(content),type);return}const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.style.display='none';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();/* Android browsers may start the download asynchronously; do not revoke the Blob URL immediately. */setTimeout(()=>URL.revokeObjectURL(url),60000)}
+function download(name,content,type='text/plain;charset=utf-8'){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.style.display='none';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();/* Android browsers may start the download asynchronously; do not revoke the Blob URL immediately. */setTimeout(()=>URL.revokeObjectURL(url),60000)}
 function exportSalesCSV(){const head=['Tanggal','Nomor','Pelanggan','Makanan','Jumlah Porsi','Omzet','HPP','Diterima','Sisa Tagihan','Metode','Status','Catatan'];const lines=[head,...state.sales.map(s=>[s.date,s.code,s.customer,s.items.map(i=>i.name).join('; '),s.items.reduce((n,i)=>n+i.qty,0),s.total,s.cogs,s.paid,s.total-s.paid,s.method,statusLabel(s),s.notes])];download('ande-serenada-penjualan.csv','\uFEFF'+lines.map(r=>r.map(csvEscape).join(',')).join('\r\n'),'text/csv;charset=utf-8')}
 function exportExpensesCSV(){const lines=[['Tanggal','Kategori','Keterangan','Jumlah','Status pembayaran'],...state.expenses.map(e=>[e.date,e.category,e.description,e.amount,e.isPaid?'Sudah dibayar':'Belum dibayar'])];download('ande-serenada-pengeluaran.csv','\uFEFF'+lines.map(r=>r.map(csvEscape).join(',')).join('\r\n'),'text/csv;charset=utf-8')}
 function readRescueSnapshot(){try{const raw=localStorage.getItem(KEY);if(!raw)return{ok:false,message:'Tidak ditemukan data pada penyimpanan browser ini. Data asli di browser lain tidak terpengaruh.'};const parsed=JSON.parse(raw);if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))return{ok:false,message:'Data ditemukan, tetapi formatnya tidak dapat dibaca. Jangan pulihkan atau menimpa data.'};const counts={products:Array.isArray(parsed.products)?parsed.products.length:0,sales:Array.isArray(parsed.sales)?parsed.sales.length:0,receipts:Array.isArray(parsed.receipts)?parsed.receipts.length:0,expenses:Array.isArray(parsed.expenses)?parsed.expenses.length:0};if(!Array.isArray(parsed.products)||!Array.isArray(parsed.sales)||!Array.isArray(parsed.expenses))return{ok:false,message:'Penyimpanan berisi data, tetapi strukturnya berbeda dari format aplikasi. Jangan lanjutkan pemulihan otomatis.',parsed,raw,counts};return{ok:true,parsed,raw,counts}}catch(err){return{ok:false,message:'Browser tidak mengizinkan pembacaan penyimpanan lokal: '+(err&&err.message?err.message:'akses ditolak')}}}

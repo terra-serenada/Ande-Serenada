@@ -1,7 +1,5 @@
-<!-- Ande Serenada: ikon shortcut dan PWA -->
-<link rel="icon" href="./favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="./favicon-48.png">
-<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<!-- Ikon Ande Serenada versi 3 --><link rel="icon" href="./ande-serenada-favicon-v3.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="./ande-serenada-favicon-32-v3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./ande-serenada-apple-touch-180-v3.png">
 <link rel="manifest" href="./site.webmanifest">
-<meta name="theme-color" content="#4B200D">
+<meta name="theme-color" content="#100D0B">

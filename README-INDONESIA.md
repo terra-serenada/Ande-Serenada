@@ -1,56 +1,40 @@
-# Ande Serenada — Paket GitHub Pages + Android APK
+# Ande Serenada — paket repository lengkap
 
-Paket ini berisi aplikasi web Ande Serenada dan proyek Android WebView. File `index.html` adalah sumber aplikasi utama. Workflow GitHub Actions membangun APK Android secara otomatis.
+Paket ini menyiapkan ulang seluruh repository Ande Serenada untuk GitHub Pages dan APK Android.
 
-## Isi paket
+## Isi utama
 
-- `index.html` — aplikasi Ande Serenada versi terbaru (tema gelap, Daftar Menu, panel struk, penyelamatan data).
-- `.nojekyll` — menonaktifkan pemrosesan Jekyll pada GitHub Pages.
-- `android/` — proyek Android WebView lengkap.
-- `.github/workflows/build-apk.yml` — workflow untuk membangun APK.
+- `index.html`: aplikasi web saat ini (fitur pembukuan dan panel yang sudah ada dipertahankan).
+- `favicon*`, `apple-touch-icon.png`, `icon-*.png`, `site.webmanifest`: ikon web/PWA.
+- `android/`: proyek Android WebView lengkap dengan ikon launcher adaptif yang diperbaiki.
+- `.github/workflows/build-apk.yml`: workflow build APK dengan pemasangan Android SDK yang benar.
+- `.nojekyll`: file GitHub Pages.
+- `brand-assets/`: salinan logo asli untuk aset sumber.
 
-## Cara reset repository GitHub
+## Cara upload seluruh paket
 
-1. Pastikan cadangan data aplikasi dari setiap HP sudah disimpan. Mengganti file repository tidak otomatis mencadangkan data lokal pada HP.
-2. Unduh dan ekstrak ZIP paket ini di komputer.
-3. Buka repository `terra-serenada/Ande-Serenada` di GitHub.
-4. Unggah **isi folder hasil ekstrak** ke root repository, bukan folder pembungkus `Ande-Serenada-Reset-GitHub`.
-5. Jika ingin benar-benar mengosongkan repository terlebih dahulu, lakukan itu hanya setelah memastikan salinan ZIP ini tersimpan. Cara yang lebih aman adalah mengganti/menimpa file repository dengan seluruh isi paket ini.
-6. Pastikan branch tujuan adalah `main` dan commit perubahan.
+1. Simpan ZIP ini sebagai cadangan sebelum mengunggah.
+2. Ekstrak ZIP di komputer sehingga terlihat `index.html`, `.nojekyll`, folder `android`, dan folder `.github` pada tingkat paling atas.
+3. Di GitHub, buka repository `terra-serenada/Ande-Serenada` dan branch `main`.
+4. Pilih **Add file → Upload files**.
+5. Unggah seluruh isi folder hasil ekstrak (jangan unggah folder pembungkus ZIP sebagai satu folder).
+6. Commit ke branch `main`.
+7. Karena GitHub Upload tidak menghapus file lama yang tidak ada dalam paket, setelah upload hapus file duplikat lama berikut secara manual jika masih ada: `.github/workflows/Ande-Serenada-build-apk-FIXED.yml`. Pertahankan hanya `.github/workflows/build-apk.yml` agar build tidak berjalan dua kali.
 
-## Mengaktifkan GitHub Pages
+## Ikon Android
 
-Di Settings → Pages:
+Ikon adaptif menggunakan foreground dengan ruang kosong yang cukup pada tepi, sehingga logo berada di safe zone Android. Layer monochrome sengaja tidak dipakai agar launcher Android/One UI tidak mengubah logo warna menjadi ikon tema satu warna. PNG density fallback juga diberi ruang aman.
 
-- Source: `Deploy from a branch`
-- Branch: `main`
-- Folder: `/(root)`
-- Save
+## GitHub Pages
 
-Alamat halaman proyek: `https://terra-serenada.github.io/Ande-Serenada/`
+Buka **Settings → Pages**, pilih **Deploy from a branch**, branch `main`, folder `/(root)`, lalu Save. URL project: `https://terra-serenada.github.io/Ande-Serenada/`.
 
-## Membangun APK
+Untuk menyegarkan shortcut, setelah deployment berhasil hapus shortcut Ande Serenada lama saja, lalu buka URL HTTPS di Samsung Internet dan tambahkan ke layar utama kembali. Jangan hapus data situs/browser.
 
-1. Setelah paket masuk ke branch `main`, buka tab **Actions**.
-2. Pilih workflow **Build Ande Serenada APK**.
-3. Jalankan **Run workflow** jika workflow belum berjalan otomatis.
-4. Tunggu sampai semua langkah berstatus hijau.
-5. Buka hasil run dan unduh artifact **Ande-Serenada-Android-APK**.
-6. Ekstrak artifact ZIP untuk mendapatkan `app-debug.apk`, lalu kirim APK ke HP Android lain dan instal.
+## APK
 
-APK debug dapat dipasang untuk pengujian dan distribusi internal. Android mungkin meminta izin **Install unknown apps** untuk aplikasi yang digunakan membuka APK.
+Setelah commit, buka tab **Actions**, pilih `Build Ande Serenada APK`, dan periksa hasil build. APK diunggah sebagai artifact `Ande-Serenada-APK` apabila seluruh langkah berhasil.
 
-## Catatan data
+## Keamanan data
 
-Aplikasi web menyimpan data secara lokal pada perangkat/browser. Data di HP lama tidak otomatis ikut ke APK atau HP baru. Ekspor JSON dari perangkat lama dan pulihkan melalui menu **Data & Cadangan** pada perangkat tujuan. Buat cadangan sebelum pemulihan karena proses pulihkan mengganti data yang sedang aktif.
-
-Pada APK Android, ekspor file menggunakan pemilih dokumen Android (Save As), sedangkan pemulihan JSON menggunakan pemilih dokumen (Open). Ini menghindari ketergantungan unduhan `blob:` pada browser.
-
-## Identitas aplikasi Android
-
-- Application ID: `id.terraserenada.andeserenada`
-- Minimum Android: Android 6.0 (API 23)
-- Target SDK: Android 15 (API 35)
-- Versi awal: `1.0.0` (debug APK)
-
-Jangan mengubah Application ID jika ingin mempertahankan identitas paket aplikasi pada pembaruan berikutnya.
+Mengunggah file repository tidak memindahkan ataupun menghapus data `localStorage` yang sudah tersimpan di HP. Jangan bersihkan data/cache browser dan jangan menghapus shortcut lama sebelum ikon baru berhasil dibuat. Cadangkan data pembukuan dalam format JSON sebelum pemulihan atau penggantian data aplikasi.

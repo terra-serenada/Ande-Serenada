@@ -1,0 +1,10 @@
+PANDUAN SINGKAT UPLOAD FULL REPOSITORY
+
+1. Ekstrak ZIP ini.
+2. Upload seluruh ISI folder ke root repository terra-serenada/Ande-Serenada pada branch main.
+3. Commit changes.
+4. Hapus file lama .github/workflows/Ande-Serenada-build-apk-FIXED.yml jika masih ada; sisakan build-apk.yml saja.
+5. Jangan hapus data/cache browser pada HP. Perubahan repository tidak menghapus localStorage.
+6. Setelah Pages selesai, hapus shortcut lama saja dan tambahkan URL HTTPS kembali melalui Samsung Internet.
+
+Folder ini berisi index.html, aset web, webmanifest, folder android lengkap, .github/workflows, .nojekyll dan brand-assets.
