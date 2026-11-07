@@ -34,12 +34,22 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v4
         with:
-          packages: 'platform-tools,platforms;android-35,build-tools;35.0.0'
+          # Space-separated package list. Do not replace spaces with commas.
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: '8.13'
+
+      - name: Verify launcher icon resources
+        working-directory: android/app/src/main/res
+        run: |
+          test -f mipmap-anydpi-v26/ic_launcher.xml
+          test -f mipmap-anydpi-v26/ic_launcher_round.xml
+          test -f mipmap-anydpi-v26/ic_launcher_foreground.png
+          test -f mipmap-anydpi-v26/ic_launcher_monochrome.png
+          echo "Adaptive launcher icon resources found."
 
       - name: Build installable debug APK
         working-directory: android
