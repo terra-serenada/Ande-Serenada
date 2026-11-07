@@ -1,0 +1,43 @@
+PERBAIKAN IKON APK ANDE SERENADA — v2 (RESOURCE DENSITY)
+
+PENYEBAB YANG DITEMUKAN
+APK lama menaruh bitmap adaptive foreground dan monochrome 432x432 px di
+mipmap-anydpi-v26. Folder anydpi tidak memiliki skala kepadatan layar. Untuk adaptive
+icon, Android memakai kanvas 108x108 dp; bitmap harus diberikan melalui folder density
+agar dipilih pada 1x/1.5x/2x/3x/4x dengan ukuran fisik tepat.
+
+PAKET INI MEMINDAHKAN REFERENSI KE RESOURCE DENSITY-SPESIFIK:
+- mdpi: 108x108 px
+- hdpi: 162x162 px
+- xhdpi: 216x216 px
+- xxhdpi: 324x324 px
+- xxxhdpi: 432x432 px
+
+Nama resource baru berakhiran _density. Ini penting: file 432px lama yang masih ada di
+mipmap-anydpi-v26 tidak akan lagi dipakai oleh XML adaptive icon yang diperbarui.
+
+UPLOAD KE ROOT REPOSITORY (REPLACE FILE PADA JALUR YANG SAMA):
+1. Seluruh file PNG pada android/app/src/main/res/mipmap-{mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi}/
+2. android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+3. android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+4. android/app/build.gradle
+5. .github/workflows/build-apk.yml
+
+NAMA WORKFLOW WAJIB TETAP:
+.github/workflows/build-apk.yml
+Tidak membuat file YAML lain atau duplikat workflow.
+
+SETELAH COMMIT:
+- Karena ada perubahan di android/**, GitHub Actions akan otomatis berjalan.
+- Artifact yang dihasilkan bernama Ande-Serenada-APK.
+
+PENTING TENTANG DATA DAN INSTALLASI:
+Versi APK sebelumnya dihasilkan oleh runner GitHub yang menggunakan debug.keystore sementara.
+Fingerprint sertifikat antar-run ternyata berbeda. Workflow baru menambahkan cache agar kunci
+debug yang dibuat pada build pertama diperpanjang untuk build selanjutnya.
+APK pertama setelah patch dapat memiliki tanda tangan berbeda dari aplikasi yang sudah terpasang.
+Jangan uninstall aplikasi lama sebelum mengekspor JSON dan memastikan cadangannya benar-benar
+tersimpan. Jika Android menolak pembaruan karena sertifikat berbeda, hentikan dulu dan pastikan
+cadangan data aman sebelum memilih reinstall.
+
+File ini adalah patch sumber, bukan APK jadi. APK baru dibuat oleh GitHub Actions setelah upload.
