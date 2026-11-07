@@ -13,15 +13,21 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ande-serenada-apk-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
+    name: Build signed update APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Copy GitHub Pages app into Android assets
+      - name: Copy current GitHub Pages app into Android assets
         run: |
+          test -s index.html
           mkdir -p android/app/src/main/assets
           cp index.html android/app/src/main/assets/index.html
 
@@ -34,13 +40,24 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v4
         with:
-          # Space-separated package list. Do not replace spaces with commas.
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: '8.13'
+
+      - name: Prepare persistent Android signing key
+        env:
+          ANDROID_SIGNING_KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$ANDROID_SIGNING_KEYSTORE_BASE64" ]; then
+            echo "::error::Repository secret ANDROID_SIGNING_KEYSTORE_BASE64 belum diatur."
+            exit 1
+          fi
+          printf '%s' "$ANDROID_SIGNING_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/ande-serenada-update.jks"
+          test -s "$RUNNER_TEMP/ande-serenada-update.jks"
+          echo "ANDROID_SIGNING_STORE_FILE=$RUNNER_TEMP/ande-serenada-update.jks" >> "$GITHUB_ENV"
 
       - name: Verify launcher icon resources
         working-directory: android/app/src/main/res
@@ -51,14 +68,24 @@ jobs:
           test -f mipmap-anydpi-v26/ic_launcher_monochrome.png
           echo "Adaptive launcher icon resources found."
 
-      - name: Build installable debug APK
+      - name: Build APK signed with the persistent key
         working-directory: android
-        run: gradle --no-daemon assembleDebug
+        env:
+          ANDROID_SIGNING_STORE_FILE: ${{ runner.temp }}/ande-serenada-update.jks
+          ANDROID_SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+          ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+          ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+        run: gradle --no-daemon clean assembleDebug -PversionCodeOverride=${{ github.run_number }}
 
-      - name: Upload APK artifact
+      - name: Verify APK output
+        run: |
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+          echo "APK created successfully."
+
+      - name: Upload signed update APK
         uses: actions/upload-artifact@v4
         with:
-          name: Ande-Serenada-APK
+          name: Ande-Serenada-APK-v1.2.0-build${{ github.run_number }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
