@@ -1,9 +1,37 @@
-ANDE SERENADA — PAKET REPOSITORY LENGKAP
+ANDE SERENADA — PAKET REPOSITORY LENGKAP (IKON v4)
 
-Gunakan seluruh isi folder ini untuk menimpa file repository pada branch main.
+Gunakan seluruh isi folder ini untuk mengganti isi repository pada branch main.
 
-Penting: GitHub upload akan menimpa file dengan nama yang sama, tetapi tidak menghapus file yang tidak ada dalam paket. Setelah upload, hapus file duplikat lama .github/workflows/Ande-Serenada-build-apk-FIXED.yml jika masih ada. Sisakan .github/workflows/build-apk.yml.
+YANG SUDAH DIPERBAIKI:
+- Ikon browser/PWA memakai aset v4 dengan nama baru agar browser tidak terus memakai cache ikon lama.
+- Android adaptive icon mempunyai foreground dan background terpisah.
+- Ikon bertema Android menggunakan layer ic_launcher_monochrome.png berwarna putih dengan latar transparan.
+- Layer monochrome ditempatkan di safe zone Android: maksimal 66x66 dp di kanvas 108x108 dp.
+- Workflow build APK hanya satu dan bernama persis .github/workflows/build-apk.yml.
+- Workflow memasang Android SDK lewat sdkmanager dengan argumen terpisah, bukan satu string dipisah koma.
 
-Ikon web memakai nama file v3 agar Samsung Internet tidak memakai cache ikon lama. Ikon APK menggunakan adaptive foreground berpadding di dalam zona aman 66x66 dari bidang 108x108 dan tanpa layer monochrome eksplisit.
+CARA UPLOAD:
+1. Ekstrak ZIP di komputer.
+2. Buka repository terra-serenada/Ande-Serenada, branch main.
+3. Pilih Add file -> Upload files.
+4. Unggah seluruh isi folder hasil ekstrak ke root repository, termasuk folder .github dan android.
+5. Commit perubahan.
+6. Pastikan hanya ada .github/workflows/build-apk.yml. Bila workflow duplikat lama masih tersisa, hapus duplikat itu.
 
-Jangan hapus data/cache/storage browser pada HP. Pergantian file repository tidak menghapus localStorage, tetapi menghapus data browser dapat menghilangkan pembukuan.
+BUILD APK:
+1. Buka Actions.
+2. Pilih Build Ande Serenada APK.
+3. Pilih Run workflow pada branch main.
+4. Unduh artifact Ande-Serenada-APK jika semua langkah berhasil.
+
+GITHUB PAGES:
+Pastikan Settings -> Pages memakai Deploy from a branch, branch main, folder /(root).
+Alamat: https://terra-serenada.github.io/Ande-Serenada/
+
+SETELAH IKON DIPERBARUI:
+- Buka URL HTTPS melalui Samsung Internet.
+- Hapus shortcut lama saja, lalu tambahkan shortcut baru.
+- Jangan menghapus data situs, cache/storage browser, atau localStorage pembukuan.
+
+DATA:
+Paket repository tidak mengubah localStorage di HP secara langsung. Tetap simpan backup pembukuan dalam format JSON. Jangan menghapus data browser untuk menyegarkan ikon.

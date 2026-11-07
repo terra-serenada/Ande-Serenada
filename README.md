@@ -23,7 +23,7 @@ Paket ini menyiapkan ulang seluruh repository Ande Serenada untuk GitHub Pages d
 
 ## Ikon Android
 
-Ikon adaptif menggunakan foreground dengan ruang kosong yang cukup pada tepi, sehingga logo berada di safe zone Android. Layer monochrome sengaja tidak dipakai agar launcher Android/One UI tidak mengubah logo warna menjadi ikon tema satu warna. PNG density fallback juga diberi ruang aman.
+Ikon adaptif menggunakan foreground dengan ruang kosong yang cukup pada tepi, sehingga logo berada di safe zone Android. Layer monochrome putih-transparan disertakan agar ikon tetap memakai lambang Ande Serenada ketika Android/One UI mengaktifkan ikon bertema. Artwork monochrome disederhanakan dengan membuang warna dasar cokelat, lalu diletakkan di safe zone Android.
 
 ## GitHub Pages
 

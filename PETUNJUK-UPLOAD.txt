@@ -1,10 +1,20 @@
-PANDUAN SINGKAT UPLOAD FULL REPOSITORY
+ANDE SERENADA — PAKET PENGGANTI REPOSITORY (IKON MONOCHROME + APK)
 
-1. Ekstrak ZIP ini.
-2. Upload seluruh ISI folder ke root repository terra-serenada/Ande-Serenada pada branch main.
-3. Commit changes.
-4. Hapus file lama .github/workflows/Ande-Serenada-build-apk-FIXED.yml jika masih ada; sisakan build-apk.yml saja.
-5. Jangan hapus data/cache browser pada HP. Perubahan repository tidak menghapus localStorage.
-6. Setelah Pages selesai, hapus shortcut lama saja dan tambahkan URL HTTPS kembali melalui Samsung Internet.
+UNGGAH ISI FOLDER INI KE ROOT REPOSITORY terra-serenada/Ande-Serenada, branch main.
+Jangan unggah folder pembungkusnya. Pertahankan struktur .github dan android.
 
-Folder ini berisi index.html, aset web, webmanifest, folder android lengkap, .github/workflows, .nojekyll dan brand-assets.
+PENTING:
+- Workflow hanya satu, dengan nama persis .github/workflows/build-apk.yml.
+- Jangan mengganti nama menjadi build-apk-FIXED.yml atau membuat duplikat workflow.
+- Folder android/app/src/main/res/mipmap-anydpi-v26 berisi ic_launcher.xml, ic_launcher_round.xml, ic_launcher_foreground.png, dan ic_launcher_monochrome.png.
+- Ikon monochrome adalah layer putih-transparan untuk Android Themed Icons; ikon warna tetap memakai logo penuh.
+- Aset web menggunakan nama v4 baru untuk menghindari cache ikon lama.
+
+Setelah upload dan commit:
+1. Buka Actions.
+2. Pilih workflow Build Ande Serenada APK.
+3. Pilih Run workflow pada branch main.
+4. Pastikan langkah Verify Android project and launcher icon files dan Build installable debug APK berhasil.
+5. Unduh artifact Ande-Serenada-APK.
+
+Jangan hapus data browser atau data situs. Penggantian file repository tidak memindahkan atau menghapus localStorage di HP, tetapi pemasangan ulang APK dapat memiliki implikasi data lokal tersendiri.
