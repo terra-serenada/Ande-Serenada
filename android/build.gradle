@@ -1,3 +1,54 @@
 plugins {
-    id 'com.android.application' version '8.13.2' apply false
+    id 'com.android.application'
+}
+
+def signingStoreFilePath = System.getenv('ANDROID_SIGNING_STORE_FILE')
+def signingStorePasswordValue = System.getenv('ANDROID_SIGNING_STORE_PASSWORD')
+def signingKeyAliasValue = System.getenv('ANDROID_SIGNING_KEY_ALIAS')
+def signingKeyPasswordValue = System.getenv('ANDROID_SIGNING_KEY_PASSWORD')
+def hasPersistentSigning = [signingStoreFilePath, signingStorePasswordValue,
+        signingKeyAliasValue, signingKeyPasswordValue].every { it != null && !it.trim().isEmpty() }
+def configuredVersionCode = (project.findProperty('versionCodeOverride') ?: '3').toString().toInteger()
+
+android {
+    namespace 'id.terraserenada.andeserenada'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'id.terraserenada.andeserenada'
+        minSdk 23
+        targetSdk 35
+        versionCode configuredVersionCode
+        versionName '1.2.0'
+    }
+
+    if (hasPersistentSigning) {
+        signingConfigs {
+            persistentUpdate {
+                storeFile file(signingStoreFilePath)
+                storePassword signingStorePasswordValue
+                keyAlias signingKeyAliasValue
+                keyPassword signingKeyPasswordValue
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+            if (hasPersistentSigning) {
+                signingConfig signingConfigs.persistentUpdate
+            }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
