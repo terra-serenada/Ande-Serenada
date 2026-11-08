@@ -2,6 +2,34 @@ plugins {
     id 'com.android.application'
 }
 
+// The command-line -PversionCodeOverride property is available to this module.
+def versionCodeText = (project.findProperty('versionCodeOverride') ?: '3').toString()
+def configuredVersionCode
+try {
+    configuredVersionCode = versionCodeText.toInteger()
+} catch (Exception ignored) {
+    throw new GradleException("versionCodeOverride harus berupa bilangan bulat positif; nilai diterima: '${versionCodeText}'")
+}
+if (configuredVersionCode < 1) {
+    throw new GradleException("versionCodeOverride harus lebih besar dari 0")
+}
+
+// Persistent signing values are supplied only by GitHub Actions secrets.
+def signingStoreFilePath = System.getenv('ANDROID_SIGNING_STORE_FILE')
+def signingStorePasswordValue = System.getenv('ANDROID_SIGNING_STORE_PASSWORD')
+def signingKeyAliasValue = System.getenv('ANDROID_SIGNING_KEY_ALIAS')
+def signingKeyPasswordValue = System.getenv('ANDROID_SIGNING_KEY_PASSWORD')
+def hasPersistentSigning = [
+        signingStoreFilePath,
+        signingStorePasswordValue,
+        signingKeyAliasValue,
+        signingKeyPasswordValue
+].every { it != null && !it.trim().isEmpty() }
+
+if (project.findProperty('requirePersistentSigning')?.toString() == 'true' && !hasPersistentSigning) {
+    throw new GradleException('Signing permanen wajib untuk build ini, tetapi variabel signing belum lengkap.')
+}
+
 android {
     namespace 'id.terraserenada.andeserenada'
     compileSdk 35
@@ -10,14 +38,29 @@ android {
         applicationId 'id.terraserenada.andeserenada'
         minSdk 23
         targetSdk 35
-        versionCode 2
-        versionName '1.1.0'
+        versionCode configuredVersionCode
+        versionName '1.2.0'
+    }
+
+    if (hasPersistentSigning) {
+        signingConfigs {
+            persistentUpdate {
+                storeFile file(signingStoreFilePath)
+                storePassword signingStorePasswordValue
+                keyAlias signingKeyAliasValue
+                keyPassword signingKeyPasswordValue
+            }
+        }
     }
 
     buildTypes {
         debug {
+            // Keep the same package identity as the existing installable debug APK.
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
+            if (hasPersistentSigning) {
+                signingConfig signingConfigs.persistentUpdate
+            }
         }
         release {
             minifyEnabled false
